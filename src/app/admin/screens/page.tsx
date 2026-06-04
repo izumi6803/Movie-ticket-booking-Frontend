@@ -41,16 +41,16 @@ export default function AdminScreensPage() {
       setIsLoading(true);
       setError(null);
       
-      const [screensRes, theatersRes] = await Promise.all([
-        screensApi.getAll(),
-        theatersApi.getAll(),
-      ]);
-      
-      if (screensRes.success) {
-        setScreens(screensRes.data);
-      }
+      // Load theaters first
+      const theatersRes = await theatersApi.getAll();
       if (theatersRes.success) {
         setTheaters(theatersRes.data);
+      }
+      
+      // Then load screens
+      const screensRes = await screensApi.getAll();
+      if (screensRes.success) {
+        setScreens(screensRes.data);
       }
     } catch {
       setError("Failed to load data");
@@ -142,24 +142,29 @@ export default function AdminScreensPage() {
         </div>
 
         {/* Theater Filter */}
-        <div className="flex gap-2">
-          <Button
-            variant={selectedTheater === "" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSelectedTheater("")}
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Filter by Theater:</span>
+          <select
+            value={selectedTheater}
+            onChange={(e) => setSelectedTheater(e.target.value)}
+            className="p-2 border rounded-md bg-background text-sm min-w-[200px]"
           >
-            All Theaters
-          </Button>
-          {theaters.map((theater) => (
+            <option value="">All Theaters</option>
+            {theaters.map((theater) => (
+              <option key={theater.id} value={theater.id}>
+                {theater.name}
+              </option>
+            ))}
+          </select>
+          {selectedTheater && (
             <Button
-              key={theater.id}
-              variant={selectedTheater === theater.id ? "default" : "outline"}
+              variant="ghost"
               size="sm"
-              onClick={() => setSelectedTheater(theater.id)}
+              onClick={() => setSelectedTheater("")}
             >
-              {theater.name}
+              Clear
             </Button>
-          ))}
+          )}
         </div>
 
         <div className="bg-card rounded-xl shadow-sm border">
