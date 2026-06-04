@@ -46,7 +46,8 @@ export function ImageUpload({ value, onChange, onRemove, className }: ImageUploa
       formData.append("file", file);
 
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/api/uploads", {
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
+      const response = await fetch(`${API_BASE_URL}/uploads`, {
         method: "POST",
         headers: {
           ...(token && { Authorization: `Bearer ${token}` }),
