@@ -103,7 +103,10 @@ export default function AdminMoviesPage() {
   }, [loadMovies, loadComingSoonAndNowShowing]);
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [movieToDelete, setMovieToDelete] = useState<Movie | null>(null);
+  const [movieToEdit, setMovieToEdit] = useState<Movie | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeleteClick = (movie: Movie) => {
@@ -261,21 +264,29 @@ export default function AdminMoviesPage() {
                   {/* Hover actions */}
                   <div className="absolute bottom-3 left-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
                     <Dialog>
-                      <DialogTrigger asChild>
-                        <Button 
-                          variant="secondary" 
-                          size="sm" 
-                          className="flex-1 bg-white/90 hover:bg-white text-black backdrop-blur-md"
-                        >
-                          <Pencil className="h-3.5 w-3.5 mr-1" />
-                          Edit
-                        </Button>
-                      </DialogTrigger>
+                      <Button 
+                        variant="secondary" 
+                        size="sm" 
+                        className="flex-1 bg-white/90 hover:bg-white text-black backdrop-blur-md"
+                        onClick={() => { setMovieToEdit(movie); setEditDialogOpen(true); }}
+                      >
+                        <Pencil className="h-3.5 w-3.5 mr-1" />
+                        Edit
+                      </Button>
+                    </Dialog>
+                    
+                    <Dialog open={editDialogOpen && movieToEdit?.id === movie.id} onOpenChange={(open) => { if (!open) { setEditDialogOpen(false); setMovieToEdit(null); } }}>
                       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                         <DialogHeader>
                           <DialogTitle>Edit Movie</DialogTitle>
                         </DialogHeader>
-                        <MovieForm movie={movie} onSuccess={(msg) => { showSuccessToast(msg); loadMovies(); }} />
+                        {movieToEdit && (
+                          <MovieForm 
+                            movie={movieToEdit} 
+                            onSuccess={(msg) => { showSuccessToast(msg); loadMovies(); setEditDialogOpen(false); setMovieToEdit(null); }}
+                            onClose={() => { setEditDialogOpen(false); setMovieToEdit(null); }}
+                          />
+                        )}
                       </DialogContent>
                     </Dialog>
                     <Button
@@ -551,9 +562,9 @@ export default function AdminMoviesPage() {
               <p className="text-muted-foreground mt-2 text-lg">Manage your movie catalog and track showtimes.</p>
             </div>
 
-            <Dialog>
+            <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
               <DialogTrigger asChild>
-                <Button size="lg" className="gap-2 btn-shine shadow-lg shadow-primary/25">
+                <Button size="lg" className="gap-2 btn-shine shadow-lg shadow-primary/25" onClick={() => setCreateDialogOpen(true)}>
                   <Plus className="h-5 w-5" />
                   Add Movie
                 </Button>
@@ -562,7 +573,10 @@ export default function AdminMoviesPage() {
                 <DialogHeader>
                   <DialogTitle>Add New Movie</DialogTitle>
                 </DialogHeader>
-                <MovieForm onSuccess={(msg) => { showSuccessToast(msg); loadMovies(); }} />
+                <MovieForm 
+                  onSuccess={(msg) => { showSuccessToast(msg); loadMovies(); setCreateDialogOpen(false); }} 
+                  onClose={() => setCreateDialogOpen(false)}
+                />
               </DialogContent>
             </Dialog>
           </div>
@@ -719,7 +733,7 @@ export default function AdminMoviesPage() {
   );
 }
 
-function MovieForm({ onSuccess, movie }: { onSuccess: (message: string) => void; movie?: Movie }) {
+function MovieForm({ onSuccess, movie, onClose }: { onSuccess: (message: string) => void; movie?: Movie; onClose?: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [posterUrl, setPosterUrl] = useState<string | undefined>(movie?.posterUrl || undefined);
   const [trailerUrl, setTrailerUrl] = useState<string | undefined>(movie?.trailerUrl || undefined);
@@ -753,6 +767,11 @@ function MovieForm({ onSuccess, movie }: { onSuccess: (message: string) => void;
       } else {
         await moviesApi.create(movieData);
         onSuccess(`Movie "${movieData.title}" created successfully!`);
+      }
+      
+      // Close modal after success
+      if (onClose) {
+        onClose();
       }
     } catch {
       alert(`Failed to ${movie ? 'update' : 'create'} movie`);
