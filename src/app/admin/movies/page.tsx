@@ -746,6 +746,21 @@ function MovieForm({ onSuccess, movie, onClose }: { onSuccess: (message: string)
       const formData = new FormData(e.currentTarget);
       const genreStr = formData.get("genre") as string;
       const castStr = formData.get("cast") as string;
+      const releaseDate = formData.get("releaseDate") as string;
+      const status = formData.get("status") as string;
+      
+      // Validate release date for coming soon movies
+      if (status === "coming_soon" && releaseDate) {
+        const selectedDate = new Date(releaseDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (selectedDate < today) {
+          alert("Coming soon movies cannot have a release date in the past. Please select today or a future date.");
+          setIsSubmitting(false);
+          return;
+        }
+      }
       
       const movieData = {
         title: formData.get("title") as string,
@@ -754,10 +769,10 @@ function MovieForm({ onSuccess, movie, onClose }: { onSuccess: (message: string)
         genre: genreStr || "",
         rating: (formData.get("rating") as string || "G") as any,
         director: formData.get("director") as string || "",
-        status: (formData.get("status") as string || "coming_soon") as any,
+        status: (status || "coming_soon") as any,
         posterUrl: posterUrl || undefined,
         trailerUrl: trailerUrl || undefined,
-        releaseDate: formData.get("releaseDate") as string || "",
+        releaseDate: releaseDate || "",
         cast: castStr || "",
       };
 
