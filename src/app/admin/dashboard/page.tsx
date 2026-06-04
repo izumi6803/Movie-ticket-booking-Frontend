@@ -36,10 +36,10 @@ export default function AdminDashboardPage() {
         dashboardApi.getBookingsByGenre(),
       ]);
 
-      if (statsRes.success) setStats(statsRes.data);
-      if (revenueRes.success) setRevenue(revenueRes.data);
-      if (moviesRes.success) setTopMovies(moviesRes.data);
-      if (genreRes.success) setBookingsByGenre(genreRes.data);
+      if (statsRes.success) setStats(statsRes.data || {});
+      if (revenueRes.success) setRevenue(Array.isArray(revenueRes.data) ? revenueRes.data : []);
+      if (moviesRes.success) setTopMovies(Array.isArray(moviesRes.data) ? moviesRes.data : []);
+      if (genreRes.success) setBookingsByGenre(Array.isArray(genreRes.data) ? genreRes.data : []);
     } catch (err) {
       setError("Failed to load dashboard data");
     } finally {
