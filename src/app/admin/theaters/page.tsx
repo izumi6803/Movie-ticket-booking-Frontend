@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { theatersApi } from "@/services/api";
 import { Theater } from "@/types";
-import { Plus, Pencil, Trash2, MapPin, Monitor } from "lucide-react";
+import { Plus, Pencil, Trash2, MapPin, Monitor, AlertTriangle } from "lucide-react";
 
 export default function AdminTheatersPage() {
   const [theaters, setTheaters] = useState<Theater[]>([]);
@@ -29,6 +29,7 @@ export default function AdminTheatersPage() {
   const [error, setError] = useState<string | null>(null);
   const [editingTheater, setEditingTheater] = useState<Theater | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<Theater | null>(null);
 
   const loadTheaters = useCallback(async () => {
     try {
@@ -49,12 +50,11 @@ export default function AdminTheatersPage() {
     loadTheaters();
   }, [loadTheaters]);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this theater?")) return;
-
+  const handleDelete = async (theater: Theater) => {
     try {
-      await theatersApi.delete(id);
-      setTheaters((prev) => prev.filter((t) => t.id !== id));
+      await theatersApi.delete(theater.id);
+      setTheaters((prev) => prev.filter((t) => t.id !== theater.id));
+      setDeleteConfirm(null);
     } catch {
       alert("Failed to delete theater");
     }
@@ -154,9 +154,10 @@ export default function AdminTheatersPage() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleDelete(theater.id)}
+                          onClick={() => setDeleteConfirm(theater)}
+                          className="text-destructive hover:text-destructive"
                         >
-                          <Trash2 className="h-4 w-4 text-destructive" />
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </TableCell>
@@ -167,6 +168,67 @@ export default function AdminTheatersPage() {
           )}
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={!!deleteConfirm} onOpenChange={() => setDeleteConfirm(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <AlertTriangle className="h-5 w-5" />
+              Confirm Delete
+            </DialogTitle>
+          </DialogHeader>
+          
+          {deleteConfirm && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <p className="font-medium">{deleteConfirm.name}</p>
+                <p className="text-sm text-muted-foreground">
+                  Location: {deleteConfirm.location}
+                </p>
+              </div>
+
+              {deleteConfirm.totalScreens > 0 && (
+                <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 space-y-2">
+                  <p className="text-sm font-medium text-destructive">
+                    ⚠️ Warning: This theater has {deleteConfirm.totalScreens} screen(s)
+                  </p>
+                  
+                  <p className="text-sm text-muted-foreground">
+                    Deleting this theater will also permanently delete:
+                  </p>
+                  <ul className="text-sm text-muted-foreground list-disc list-inside">
+                    <li>{deleteConfirm.totalScreens} screen(s)</li>
+                    <li>All seats in these screens</li>
+                    <li>All showtimes and bookings</li>
+                  </ul>
+                </div>
+              )}
+
+              <p className="text-sm text-muted-foreground">
+                This action <strong>CANNOT</strong> be undone.
+              </p>
+
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setDeleteConfirm(null)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  className="flex-1"
+                  onClick={() => handleDelete(deleteConfirm)}
+                >
+                  Delete Theater
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }
