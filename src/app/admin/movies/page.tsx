@@ -870,6 +870,7 @@ function MovieForm({ onSuccess, movie, onClose }: { onSuccess: (message: string)
           <input 
             name="releaseDate" 
             type="date" 
+            min={new Date().toISOString().split('T')[0]}
             defaultValue={movie?.releaseDate ? new Date(movie.releaseDate).toISOString().split('T')[0] : ''}
             className="w-full p-2 border rounded" 
           />
