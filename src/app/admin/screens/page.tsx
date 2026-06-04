@@ -33,6 +33,8 @@ export default function AdminScreensPage() {
   const [editingScreen, setEditingScreen] = useState<Screen | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedTheater, setSelectedTheater] = useState<string>("");
+  const [viewingScreen, setViewingScreen] = useState<Screen | null>(null);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
 
   const loadData = useCallback(async () => {
     try {
@@ -84,6 +86,11 @@ export default function AdminScreensPage() {
   const handleAddNew = () => {
     setEditingScreen(null);
     setIsDialogOpen(true);
+  };
+
+  const handleViewDetails = (screen: Screen) => {
+    setViewingScreen(screen);
+    setIsViewDialogOpen(true);
   };
 
   const handleSuccess = () => {
@@ -180,7 +187,13 @@ export default function AdminScreensPage() {
                     <TableCell className="font-medium">{screen.name}</TableCell>
                     <TableCell>{getTheaterName(screen.theaterId)}</TableCell>
                     <TableCell>
-                      <span className="capitalize px-2 py-1 bg-secondary rounded-full text-xs">
+                      <span className={`capitalize px-2 py-1 rounded-full text-xs font-medium ${
+                        screen.screenType === 'imax' ? 'bg-blue-100 text-blue-800' :
+                        screen.screenType === '3d' ? 'bg-green-100 text-green-800' :
+                        screen.screenType === '4dx' ? 'bg-purple-100 text-purple-800' :
+                        screen.screenType === 'vip' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
                         {screen.screenType}
                       </span>
                     </TableCell>
@@ -196,14 +209,18 @@ export default function AdminScreensPage() {
                         {screen.totalSeats}
                       </div>
                     </TableCell>
-                    <TableCell>{screen.soundSystem || "Standard"}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1 text-sm">
+                        <span className="text-muted-foreground">{screen.soundSystem || "Standard"}</span>
+                      </div>
+                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => router.push(`/admin/screens/${screen.id}/layout`)}
-                          title="View Seat Layout"
+                          onClick={() => handleViewDetails(screen)}
+                          title="View Details"
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
@@ -230,6 +247,88 @@ export default function AdminScreensPage() {
           )}
         </div>
       </div>
+
+      {/* View Screen Details Dialog */}
+      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Screen Details</DialogTitle>
+          </DialogHeader>
+          {viewingScreen && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">Screen Name</p>
+                  <p className="font-medium">{viewingScreen.name}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Theater</p>
+                  <p className="font-medium">{getTheaterName(viewingScreen.theaterId)}</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">Screen Type</p>
+                  <span className={`capitalize px-2 py-1 rounded-full text-xs font-medium ${
+                    viewingScreen.screenType === 'imax' ? 'bg-blue-100 text-blue-800' :
+                    viewingScreen.screenType === '3d' ? 'bg-green-100 text-green-800' :
+                    viewingScreen.screenType === '4dx' ? 'bg-purple-100 text-purple-800' :
+                    viewingScreen.screenType === 'vip' ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-gray-100 text-gray-800'
+                  }`}>
+                    {viewingScreen.screenType}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Sound System</p>
+                  <p className="font-medium">{viewingScreen.soundSystem || "Standard"}</p>
+                </div>
+              </div>
+              
+              <div className="border rounded-lg p-4 space-y-3">
+                <h4 className="font-medium">Seat Configuration</h4>
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <p className="text-2xl font-bold text-primary">{viewingScreen.totalRows}</p>
+                    <p className="text-xs text-muted-foreground">Total Rows</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-primary">{viewingScreen.seatsPerRow}</p>
+                    <p className="text-xs text-muted-foreground">Seats Per Row</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-primary">{viewingScreen.totalSeats}</p>
+                    <p className="text-xs text-muted-foreground">Total Seats</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => {
+                    setIsViewDialogOpen(false);
+                    handleEdit(viewingScreen);
+                  }}
+                >
+                  <Pencil className="h-4 w-4 mr-2" />
+                  Edit Screen
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => router.push(`/admin/screens/${viewingScreen.id}/layout`)}
+                >
+                  <Eye className="h-4 w-4 mr-2" />
+                  View Layout
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }
