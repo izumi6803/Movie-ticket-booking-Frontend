@@ -18,6 +18,7 @@ import {
   Clock,
   Ticket,
   Building2,
+  Monitor,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ const adminNavigation = [
   { name: "Revenue", href: "/admin/dashboard", icon: LayoutDashboard },
   { name: "Movies", href: "/admin/movies", icon: Film },
   { name: "Theaters", href: "/admin/theaters", icon: Building2 },
+  { name: "Screens", href: "/admin/screens", icon: Monitor },
   { name: "Schedule", href: "/admin/schedule", icon: CalendarDays },
   { name: "Bookings", href: "/admin/bookings", icon: Ticket },
   { name: "Users", href: "/admin/users", icon: Users },
