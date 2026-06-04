@@ -135,7 +135,7 @@ export default function MovieDetailPage() {
               
               <p className="text-lg text-muted-foreground mb-6">{movie.description}</p>
               
-              {movie.genre && movie.genre.length > 0 && (
+              {movie.genre && Array.isArray(movie.genre) && movie.genre.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-6">
                   {movie.genre.map((g) => (
                     <Badge key={g} variant="secondary">{g}</Badge>
