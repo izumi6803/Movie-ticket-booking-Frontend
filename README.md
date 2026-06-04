@@ -4,7 +4,7 @@ Hệ thống đặt vé xem phim trực tuyến - Frontend Application
 
 ## Demo
 
-- **Production URL**: https://cinema-booking-ticket-system.vercel.app
+- **Production URL**: https://booking-room-admin.vercel.app
 - **Backend API**: https://cinema-backend-yc14.onrender.com
 
 ## Tài khoản test
