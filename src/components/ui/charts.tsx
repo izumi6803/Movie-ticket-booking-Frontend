@@ -27,6 +27,8 @@ interface ChartProps {
 const COLORS = ["#2563eb", "#7c3aed", "#db2777", "#ea580c", "#16a34a"];
 
 export function LineChartComponent({ data, xKey, yKey, title }: ChartProps) {
+  const safeData = Array.isArray(data) ? data : [];
+  
   return (
     <Card>
       {title && (
@@ -35,26 +37,34 @@ export function LineChartComponent({ data, xKey, yKey, title }: ChartProps) {
         </CardHeader>
       )}
       <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey={xKey} />
-            <YAxis />
-            <Tooltip />
-            <Line
-              type="monotone"
-              dataKey={yKey}
-              stroke="#2563eb"
-              strokeWidth={2}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        {safeData.length === 0 ? (
+          <div className="flex items-center justify-center h-[300px] text-muted-foreground">
+            No data available
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={safeData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey={xKey} />
+              <YAxis />
+              <Tooltip />
+              <Line
+                type="monotone"
+                dataKey={yKey}
+                stroke="#2563eb"
+                strokeWidth={2}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        )}
       </CardContent>
     </Card>
   );
 }
 
 export function BarChartComponent({ data, xKey, yKey, title }: ChartProps) {
+  const safeData = Array.isArray(data) ? data : [];
+  
   return (
     <Card>
       {title && (
@@ -63,15 +73,21 @@ export function BarChartComponent({ data, xKey, yKey, title }: ChartProps) {
         </CardHeader>
       )}
       <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey={xKey} />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey={yKey} fill="#2563eb" />
-          </BarChart>
-        </ResponsiveContainer>
+        {safeData.length === 0 ? (
+          <div className="flex items-center justify-center h-[300px] text-muted-foreground">
+            No data available
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={safeData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey={xKey} />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey={yKey} fill="#2563eb" />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </CardContent>
     </Card>
   );
