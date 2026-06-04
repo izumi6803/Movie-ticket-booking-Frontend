@@ -1,36 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cinema Booking Ticket System
 
-## Getting Started
+Hệ thống đặt vé xem phim trực tuyến - Frontend Application
 
-First, run the development server:
+## Demo
 
+- **Production URL**: https://cinema-booking-ticket-system.vercel.app
+- **Backend API**: https://cinema-backend-yc14.onrender.com
+
+## Tài khoản test
+
+### Admin
+- **Email**: admin@cinema.com
+- **Password**: admin123
+- **Quyền**: Quản lý toàn bộ hệ thống (phim, rạp, suất chiếu, đặt vé, ngườii dùng)
+
+### Khách hàng (Customer)
+Bạn có thể đăng ký tài khoản mới tại trang `/auth/login` hoặc sử dụng tài khoản test:
+- Đăng ký với email bất kỳ để trải nghiệm đầy đủ tính năng
+
+## Tính năng chính
+
+### Admin Dashboard
+- Quản lý phim (thêm, sửa, xóa, cập nhật trạng thái)
+- Quản lý rạp chiếu và phòng chiếu
+- Quản lý suất chiếu
+- Quản lý đặt vé
+- Quản lý ngườii dùng
+- Thống kê doanh thu
+
+### Customer Portal
+- Xem danh sách phim đang chiếu và sắp chiếu
+- Xem chi tiết phim
+- Đặt vé với chọn ghế trực quan
+- Xem lịch sử đặt vé
+- Xem chi tiết vé (QR code, thông tin suất chiếu)
+- Thanh toán (Mock VNPay cho demo)
+
+## Công nghệ sử dụng
+
+- **Framework**: Next.js 16.2.6
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **UI Components**: Radix UI + shadcn/ui
+- **Charts**: Recharts
+- **Icons**: Lucide React
+- **State Management**: React Hooks
+
+## Cài đặt và chạy local
+
+### Yêu cầu
+- Node.js 18+
+- npm hoặc yarn
+
+### Bước 1: Clone repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd booking-room-admin
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Bước 2: Cài đặt dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Bước 3: Cấu hình biến môi trường
+Tạo file `.env.local`:
+```env
+NEXT_PUBLIC_API_URL=https://cinema-backend-yc14.onrender.com/api
+NEXT_PUBLIC_WS_URL=wss://cinema-backend-yc14.onrender.com
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Bước 4: Chạy development server
+```bash
+npm run dev
+```
 
-## Learn More
+Mở [http://localhost:3000](http://localhost:3000) trong trình duyệt.
 
-To learn more about Next.js, take a look at the following resources:
+### Build production
+```bash
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Cấu trúc thư mục
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+booking-room-admin/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── admin/             # Admin dashboard pages
+│   │   ├── customer/          # Customer portal pages
+│   │   ├── auth/              # Authentication pages
+│   │   └── payment/           # Payment callback
+│   ├── components/            # React components
+│   │   ├── ui/               # UI components (shadcn)
+│   │   └── layout/           # Layout components
+│   ├── hooks/                 # Custom React hooks
+│   ├── lib/                   # Utility functions
+│   ├── services/              # API services
+│   └── types/                 # TypeScript types
+├── public/                    # Static assets
+└── package.json
+```
 
-## Deploy on Vercel
+## API Endpoints
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Frontend giao tiếp với backend qua REST API:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Base URL**: `https://cinema-backend-yc14.onrender.com/api`
+- **Authentication**: JWT Token
+- **WebSocket**: `wss://cinema-backend-yc14.onrender.com` (real-time seat updates)
+
+## Deploy
+
+### Vercel (Khuyến nghị)
+1. Push code lên GitHub
+2. Import project trên Vercel
+3. Cấu hình environment variables
+4. Deploy
+
+### Environment Variables trên Vercel
+```env
+NEXT_PUBLIC_API_URL=https://cinema-backend-yc14.onrender.com/api
+NEXT_PUBLIC_WS_URL=wss://cinema-backend-yc14.onrender.com
+```
+
+## Lưu ý
+
+- Hệ thống sử dụng **mock payment** cho mục đích demo
+- Database được reset định kỳ trên môi trường development
+- Một số tính năng có thể bị giới hạn do dùng plan miễn phí của hosting services
+
+## License
+
+MIT License
+
+## Liên hệ
+
+Nếu có vấn đề hoặc góp ý, vui lòng tạo issue trên repository.
