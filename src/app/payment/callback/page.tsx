@@ -117,7 +117,7 @@ function PaymentCallbackContent() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <Card className="w-full max-w-lg">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl whitespace-normal break-words">
+          <CardTitle className="text-2xl">
             {status === "loading" && "Processing Payment..."}
             {status === "success" && "Payment Successful!"}
             {status === "failed" && "Payment Failed"}

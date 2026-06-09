@@ -95,7 +95,7 @@ export default function AuthPage() {
             <Clapperboard className="h-10 w-10 text-blue-600" />
             <span className="text-2xl font-bold text-gray-900">CinemaBook</span>
           </Link>
-          <p className="mt-2 text-gray-600 text-sm break-words">
+          <p className="mt-2 text-gray-600 text-sm">
             {mode === "login"
               ? "Sign in to book movie tickets"
               : "Create an account to get started"}
