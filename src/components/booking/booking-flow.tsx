@@ -452,9 +452,9 @@ export function BookingFlow({ movie, isOpen, onClose }: BookingFlowProps) {
                     const now = new Date();
                     return showtimeDate === selectedDate && showtimeLocal > now;
                   }).length === 0 ? (
-                  <div className="text-center py-8">
+                  <div className="w-full text-center py-8">
                     <Clock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">No showtimes available for this date</p>
+                    <p className="w-full text-muted-foreground">No showtimes available for this date</p>
                   </div>
                 ) : (
                   <div className="grid gap-3">
@@ -521,11 +521,11 @@ export function BookingFlow({ movie, isOpen, onClose }: BookingFlowProps) {
                 
                 {/* Lock Countdown */}
                 {seatLockId && lockCountdown > 0 && (
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-center">
-                    <p className="text-sm text-yellow-800">
+                  <div className="w-full bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-center">
+                    <p className="w-full text-sm text-yellow-800">
                       ⏱️ Seats reserved for: <span className="font-bold">{Math.floor(lockCountdown / 60)}:{String(lockCountdown % 60).padStart(2, '0')}</span>
                     </p>
-                    <p className="text-xs text-yellow-600 mt-1">
+                    <p className="w-full text-xs text-yellow-600 mt-1">
                       Complete your booking before time runs out!
                     </p>
                   </div>
@@ -772,30 +772,30 @@ export function BookingFlow({ movie, isOpen, onClose }: BookingFlowProps) {
 
       case 6:
         return (
-          <div className="text-center space-y-4 py-8">
+          <div className="w-full text-center space-y-4 py-8">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
               <Check className="h-8 w-8 text-green-600" />
             </div>
             <h3 className="text-xl font-semibold">Booking Confirmed!</h3>
-            <p className="text-muted-foreground">
+            <p className="w-full text-muted-foreground">
               Your tickets have been booked successfully.
             </p>
             <div className="bg-muted p-4 rounded-lg inline-block">
               <QrCode className="h-32 w-32 mx-auto" />
-              <p className="text-sm text-muted-foreground mt-2">Show this QR code at the entrance</p>
+              <p className="w-full text-sm text-muted-foreground mt-2">Show this QR code at the entrance</p>
             </div>
-            <p className="text-sm text-muted-foreground">Redirecting to My Tickets...</p>
+            <p className="w-full text-sm text-muted-foreground">Redirecting to My Tickets...</p>
           </div>
         );
 
       case 7:
         return (
-          <div className="text-center space-y-4 py-8">
+          <div className="w-full text-center space-y-4 py-8">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto animate-pulse">
               <Clock className="h-8 w-8 text-blue-600" />
             </div>
             <h3 className="text-xl font-semibold">Waiting for Payment</h3>
-            <p className="text-muted-foreground">
+            <p className="w-full text-muted-foreground">
               Please complete the payment in the VNPay window.
             </p>
             <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
@@ -836,12 +836,12 @@ export function BookingFlow({ movie, isOpen, onClose }: BookingFlowProps) {
 
       case 8:
         return (
-          <div className="text-center space-y-4 py-8">
+          <div className="w-full text-center space-y-4 py-8">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
               <Check className="h-8 w-8 text-green-600" />
             </div>
             <h3 className="text-xl font-semibold">Payment Successful!</h3>
-            <p className="text-muted-foreground">
+            <p className="w-full text-muted-foreground">
               Your payment has been completed successfully.
             </p>
             <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
@@ -852,7 +852,7 @@ export function BookingFlow({ movie, isOpen, onClose }: BookingFlowProps) {
                 <strong>Booking ID:</strong> {createdBookingId}
               </p>
             </div>
-            <p className="text-sm text-muted-foreground">Redirecting to My Tickets...</p>
+            <p className="w-full text-sm text-muted-foreground">Redirecting to My Tickets...</p>
           </div>
         );
 
@@ -863,7 +863,7 @@ export function BookingFlow({ movie, isOpen, onClose }: BookingFlowProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Book Tickets - {movie.title}</DialogTitle>
         </DialogHeader>

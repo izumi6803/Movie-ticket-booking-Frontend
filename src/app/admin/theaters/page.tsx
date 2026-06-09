@@ -92,7 +92,7 @@ export default function AdminTheatersPage() {
                 Add Theater
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-3xl">
               <DialogHeader>
                 <DialogTitle>
                   {editingTheater ? "Edit Theater" : "Add New Theater"}
@@ -171,7 +171,7 @@ export default function AdminTheatersPage() {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={!!deleteConfirm} onOpenChange={() => setDeleteConfirm(null)}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-destructive">
               <AlertTriangle className="h-5 w-5" />
@@ -182,19 +182,19 @@ export default function AdminTheatersPage() {
           {deleteConfirm && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <p className="font-medium">{deleteConfirm.name}</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="w-full font-medium">{deleteConfirm.name}</p>
+                <p className="w-full text-sm text-muted-foreground">
                   Location: {deleteConfirm.location}
                 </p>
               </div>
 
               {deleteConfirm.totalScreens > 0 && (
                 <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 space-y-2">
-                  <p className="text-sm font-medium text-destructive">
+                  <p className="w-full text-sm font-medium text-destructive">
                     ⚠️ Warning: This theater has {deleteConfirm.totalScreens} screen(s)
                   </p>
                   
-                  <p className="text-sm text-muted-foreground">
+                  <p className="w-full text-sm text-muted-foreground">
                     Deleting this theater will also permanently delete:
                   </p>
                   <ul className="text-sm text-muted-foreground list-disc list-inside">
@@ -205,7 +205,7 @@ export default function AdminTheatersPage() {
                 </div>
               )}
 
-              <p className="text-sm text-muted-foreground">
+              <p className="w-full text-sm text-muted-foreground">
                 This action <strong>CANNOT</strong> be undone.
               </p>
 

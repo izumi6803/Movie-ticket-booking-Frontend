@@ -113,43 +113,42 @@ export default function CustomerHomePage() {
         </div>
       </header>
 
-      {/* Hero Section with Animated Gradient */}
-      <section className="relative overflow-hidden py-20 lg:py-28">
+      {/* Hero Section */}
+      <section className="relative py-20 lg:py-28">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-purple-500/5 to-pink-500/5" />
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-4">
+
+        <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="w-full text-center">
+            <div className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
               <Sparkles className="h-4 w-4" />
               Welcome to CinemaBook
             </div>
-            
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+
+            <h1 className="w-full text-5xl md:text-7xl font-bold tracking-tight leading-tight mb-6">
               <span className="bg-gradient-to-r from-primary via-purple-600 to-pink-500 bg-clip-text text-transparent">
                 Book Your
               </span>
               <br />
               Movie Tickets
             </h1>
-            
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Experience the magic of cinema. Watch the latest blockbusters in the best theaters 
-              with easy booking and amazing deals!
+
+            <p className="w-full max-w-[640px] mx-auto text-lg text-muted-foreground">
+              Experience the magic of cinema. Watch the latest blockbusters in the best theaters with easy booking and amazing deals!
             </p>
-            
-            <div className="flex items-center justify-center gap-4 pt-4">
-              <Button 
-                size="lg" 
+
+            <div className="w-full flex items-center justify-center gap-4 mt-8">
+              <Button
+                size="lg"
                 onClick={() => router.push("/customer/movies")}
                 className="rounded-full px-8 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90 transition-opacity"
               >
                 <Ticket className="h-5 w-5 mr-2" />
                 Browse Movies
               </Button>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="lg"
                 onClick={() => router.push("/customer/tickets")}
                 className="rounded-full px-8"

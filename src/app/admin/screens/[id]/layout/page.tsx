@@ -67,7 +67,7 @@ export default function AdminSeatLayoutPage() {
       case "wheelchair":
         return "bg-green-100 border-green-300 text-green-800 hover:bg-green-200";
       default:
-        return "bg-gray-100 border-gray-300 text-gray-800 hover:bg-gray-200";
+        return "bg-muted border-border text-muted-foreground hover:bg-muted/80";
     }
   };
 
@@ -118,7 +118,7 @@ export default function AdminSeatLayoutPage() {
         {/* Screen Indicator */}
         <div className="flex justify-center">
           <div className="w-3/4 h-12 bg-gradient-to-b from-gray-300 to-gray-100 rounded-t-lg flex items-center justify-center shadow-inner">
-            <span className="text-sm font-medium text-gray-600">SCREEN</span>
+            <span className="text-sm font-medium text-muted-foreground">SCREEN</span>
           </div>
         </div>
 
@@ -128,7 +128,7 @@ export default function AdminSeatLayoutPage() {
             <div className="space-y-3">
               {sortedRows.map((row) => (
                 <div key={row} className="flex items-center gap-3">
-                  <span className="w-8 text-center font-bold text-gray-500">{row}</span>
+                  <span className="w-8 text-center font-bold text-muted-foreground">{row}</span>
                   <div className="flex gap-2 flex-1 justify-center">
                     {seatsByRow[row]
                       ?.sort((a, b) => a.seatNumber - b.seatNumber)
@@ -145,7 +145,7 @@ export default function AdminSeatLayoutPage() {
                         </button>
                       ))}
                   </div>
-                  <span className="w-8 text-center font-bold text-gray-500">{row}</span>
+                  <span className="w-8 text-center font-bold text-muted-foreground">{row}</span>
                 </div>
               ))}
             </div>
@@ -160,7 +160,7 @@ export default function AdminSeatLayoutPage() {
           <CardContent>
             <div className="flex gap-6">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg border-2 bg-gray-100 border-gray-300"></div>
+                <div className="w-8 h-8 rounded-lg border-2 bg-muted border-border"></div>
                 <span className="text-sm">Standard (1.0x)</span>
               </div>
               <div className="flex items-center gap-2">

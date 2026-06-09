@@ -5,15 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import {
-  Film,
-  Home,
-  Ticket,
-  User,
-  LogOut,
-  Menu,
-  X,
-} from "lucide-react";
+import { Film, Home, Ticket, User, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const customerNav = [
@@ -29,18 +21,15 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuth();
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Navigation */}
+    <div className="min-h-screen bg-background flex flex-col">
       <nav className="border-b bg-card sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
             <Link href="/customer/home" className="flex items-center gap-2">
               <Film className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold">CinemaBook</span>
             </Link>
 
-            {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-1">
               {customerNav.map((item) => {
                 const isActive = pathname === item.href;
@@ -62,26 +51,35 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
               })}
             </div>
 
-            {/* User + Mobile Menu */}
             <div className="flex items-center gap-4">
               <span className="text-sm text-muted-foreground hidden sm:block">
                 {user?.name}
               </span>
+
               <Button
                 variant="ghost"
                 size="icon"
                 className="md:hidden"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
-                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {mobileMenuOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
               </Button>
-              <Button variant="ghost" size="icon" onClick={logout} className="hidden md:flex">
+
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={logout}
+                className="hidden md:flex"
+              >
                 <LogOut className="h-5 w-5" />
               </Button>
             </div>
           </div>
 
-          {/* Mobile Menu */}
           {mobileMenuOpen && (
             <div className="md:hidden border-t py-4">
               <div className="flex flex-col gap-2">
@@ -104,6 +102,7 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
                     </Link>
                   );
                 })}
+
                 <Button
                   variant="ghost"
                   className="justify-start gap-2 px-4"
@@ -121,13 +120,9 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
         </div>
       </nav>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {children}
-      </main>
+      <main className="flex-1">{children}</main>
 
-      {/* Footer */}
-      <footer className="border-t mt-auto">
+      <footer className="border-t">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-muted-foreground">
           <p>© {new Date().getFullYear()} CinemaBook. All rights reserved.</p>
         </div>

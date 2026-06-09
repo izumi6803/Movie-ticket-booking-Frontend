@@ -14,9 +14,9 @@ export default function PaymentCallbackPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
         <Card className="w-full max-w-lg">
           <CardContent className="py-12">
-            <div className="flex flex-col items-center space-y-4">
+            <div className="w-full flex flex-col items-center space-y-4">
               <Loader2 className="h-16 w-16 animate-spin text-primary" />
-              <p className="text-gray-600">Loading...</p>
+              <p className="w-full text-gray-600 text-center">Loading...</p>
             </div>
           </CardContent>
         </Card>
@@ -125,17 +125,17 @@ function PaymentCallbackContent() {
         </CardHeader>
         <CardContent className="space-y-6">
           {status === "loading" && (
-            <div className="flex flex-col items-center space-y-4">
+            <div className="w-full flex flex-col items-center space-y-4">
               <Loader2 className="h-16 w-16 animate-spin text-primary" />
-              <p className="text-gray-600">Please wait while we process your payment...</p>
+              <p className="w-full text-gray-600 text-center">Please wait while we process your payment...</p>
             </div>
           )}
 
           {status === "success" && (
             <div className="space-y-4">
-              <div className="flex flex-col items-center space-y-2">
+              <div className="w-full flex flex-col items-center space-y-2">
                 <CheckCircle className="h-16 w-16 text-green-500" />
-                <p className="text-gray-600 text-center">Your payment has been processed successfully!</p>
+                <p className="w-full text-gray-600 text-center">Your payment has been processed successfully!</p>
               </div>
 
               {/* Booking Details */}
@@ -198,10 +198,10 @@ function PaymentCallbackContent() {
           )}
 
           {status === "failed" && (
-            <div className="flex flex-col items-center space-y-4">
+            <div className="w-full flex flex-col items-center space-y-4">
               <XCircle className="h-16 w-16 text-red-500" />
-              <div className="text-center space-y-2">
-                <p className="text-gray-600">
+              <div className="w-full text-center space-y-2">
+                <p className="w-full text-gray-600">
                   {message || "Your payment could not be processed."}
                 </p>
                 {bookingId && (

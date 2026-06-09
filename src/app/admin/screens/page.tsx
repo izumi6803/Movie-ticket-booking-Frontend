@@ -126,7 +126,7 @@ export default function AdminScreensPage() {
                 Add Screen
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-3xl">
               <DialogHeader>
                 <DialogTitle>
                   {editingScreen ? "Edit Screen" : "Add New Screen"}
@@ -197,7 +197,7 @@ export default function AdminScreensPage() {
                         screen.screenType === '3d' ? 'bg-green-100 text-green-800' :
                         screen.screenType === '4dx' ? 'bg-purple-100 text-purple-800' :
                         screen.screenType === 'vip' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-gray-100 text-gray-800'
+                        'bg-muted text-muted-foreground'
                       }`}>
                         {screen.screenType}
                       </span>
@@ -255,7 +255,7 @@ export default function AdminScreensPage() {
 
       {/* View Screen Details Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Screen Details</DialogTitle>
           </DialogHeader>
@@ -276,11 +276,11 @@ export default function AdminScreensPage() {
                 <div>
                   <p className="text-sm text-muted-foreground">Screen Type</p>
                   <span className={`capitalize px-2 py-1 rounded-full text-xs font-medium ${
-                    viewingScreen.screenType === 'imax' ? 'bg-blue-100 text-blue-800' :
-                    viewingScreen.screenType === '3d' ? 'bg-green-100 text-green-800' :
-                    viewingScreen.screenType === '4dx' ? 'bg-purple-100 text-purple-800' :
-                    viewingScreen.screenType === 'vip' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'
+                        viewingScreen.screenType === 'imax' ? 'bg-blue-100 text-blue-800' :
+                        viewingScreen.screenType === '3d' ? 'bg-green-100 text-green-800' :
+                        viewingScreen.screenType === '4dx' ? 'bg-purple-100 text-purple-800' :
+                        viewingScreen.screenType === 'vip' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-muted text-muted-foreground'
                   }`}>
                     {viewingScreen.screenType}
                   </span>

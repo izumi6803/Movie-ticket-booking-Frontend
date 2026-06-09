@@ -16,8 +16,8 @@ export default function AdminShowtimesPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Showtimes</h1>
-            <p className="text-gray-600 mt-1">Manage movie schedules.</p>
+            <h1 className="text-3xl font-bold text-foreground">Showtimes</h1>
+            <p className="text-muted-foreground mt-1">Manage movie schedules.</p>
           </div>
           <Button className="gap-2">
             <Plus className="h-4 w-4" />
@@ -25,7 +25,7 @@ export default function AdminShowtimesPage() {
           </Button>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div className="bg-card rounded-xl shadow-sm border border-border">
           <Table>
             <TableHeader>
               <TableRow>
@@ -40,7 +40,7 @@ export default function AdminShowtimesPage() {
             </TableHeader>
             <TableBody>
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8 text-gray-500">
+                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                   No showtimes scheduled.
                 </TableCell>
               </TableRow>

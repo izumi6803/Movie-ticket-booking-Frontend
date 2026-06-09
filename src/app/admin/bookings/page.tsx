@@ -130,7 +130,7 @@ export default function AdminBookingsPage() {
       pending: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
       confirmed: "bg-green-100 text-green-800 hover:bg-green-100",
       cancelled: "bg-red-100 text-red-800 hover:bg-red-100",
-      expired: "bg-gray-100 text-gray-800 hover:bg-gray-100",
+      expired: "bg-muted text-muted-foreground hover:bg-muted/80",
       completed: "bg-blue-100 text-blue-800 hover:bg-blue-100",
     };
     return (
@@ -145,7 +145,7 @@ export default function AdminBookingsPage() {
       pending: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
       paid: "bg-green-100 text-green-800 hover:bg-green-100",
       failed: "bg-red-100 text-red-800 hover:bg-red-100",
-      refunded: "bg-gray-100 text-gray-800 hover:bg-gray-100",
+      refunded: "bg-muted text-muted-foreground hover:bg-muted/80",
     };
     return (
       <Badge variant="outline" className={styles[status] || ""}>
@@ -209,7 +209,7 @@ export default function AdminBookingsPage() {
         {/* Filters */}
         <div className="flex gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search by booking code, movie, or customer..."
               value={searchQuery}
@@ -345,7 +345,7 @@ export default function AdminBookingsPage() {
 
       {/* Booking Detail Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-3xl">
           <DialogHeader>
             <DialogTitle>Booking Details</DialogTitle>
           </DialogHeader>
@@ -407,7 +407,7 @@ export default function AdminBookingsPage() {
               {selectedBooking.qrCode && (
                 <div className="border-t pt-4">
                   <p className="text-sm font-medium mb-2">QR Code</p>
-                  <div className="bg-gray-100 p-4 rounded-lg">
+                  <div className="bg-muted p-4 rounded-lg">
                     <code className="text-xs break-all">{selectedBooking.qrCode}</code>
                   </div>
                 </div>

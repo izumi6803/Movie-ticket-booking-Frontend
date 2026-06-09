@@ -281,7 +281,7 @@ export default function AdminUsersPage() {
                           className="border rounded-lg p-4 space-y-3"
                         >
                           <div className="flex items-center justify-between">
-                            <div>
+                            <div className="w-full">
                               <p className="font-medium">
                                 {booking.showtime?.movie?.title || "Unknown Movie"}
                               </p>

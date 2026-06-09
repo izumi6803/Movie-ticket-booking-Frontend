@@ -336,7 +336,7 @@ export default function CustomerTicketsPage() {
 
       {/* QR Code Dialog */}
       <Dialog open={isQRDialogOpen} onOpenChange={setIsQRDialogOpen}>
-        <DialogContent className="max-w-sm">
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="text-center flex items-center justify-center gap-2">
               <QrCode className="h-5 w-5 text-primary" />

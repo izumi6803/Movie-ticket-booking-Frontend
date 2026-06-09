@@ -247,7 +247,7 @@ export default function AdminMoviesPage() {
                           ? "bg-green-500/90 text-white hover:bg-green-500/90" 
                           : movie.status === "coming_soon"
                           ? "bg-blue-500/90 text-white hover:bg-blue-500/90"
-                          : "bg-gray-500/90 text-white hover:bg-gray-500/90"
+                          : "bg-muted-foreground/90 text-white hover:bg-muted-foreground/90"
                       }`}
                     >
                       {movie.status === "now_showing" ? "Now Showing" : movie.status === "coming_soon" ? "Coming Soon" : "Ended"}
@@ -267,7 +267,7 @@ export default function AdminMoviesPage() {
                       <Button 
                         variant="secondary" 
                         size="sm" 
-                        className="flex-1 bg-white/90 hover:bg-white text-black backdrop-blur-md"
+                        className="flex-1 bg-card/90 hover:bg-card text-foreground backdrop-blur-md"
                         onClick={() => { setMovieToEdit(movie); setEditDialogOpen(true); }}
                       >
                         <Pencil className="h-3.5 w-3.5 mr-1" />
@@ -511,7 +511,7 @@ export default function AdminMoviesPage() {
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-3 left-3 right-3">
-                    <Badge variant="secondary" className="bg-gray-500/90 text-white hover:bg-gray-500/90 backdrop-blur-md">
+                    <Badge variant="secondary" className="bg-muted-foreground/90 text-white hover:bg-muted-foreground/90 backdrop-blur-md">
                       Ended
                     </Badge>
                   </div>
@@ -695,7 +695,7 @@ export default function AdminMoviesPage() {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-destructive" />

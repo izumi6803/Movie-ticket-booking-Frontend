@@ -36,6 +36,8 @@ interface PaginatedResponse<T> {
 async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
+  const isAuthEndpoint = endpoint.startsWith("/auth/login") || endpoint.startsWith("/auth/register");
+
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     headers: {
       "Content-Type": "application/json",
@@ -44,20 +46,31 @@ async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<Api
     ...options,
   });
 
-  // Handle 401 Unauthorized - token expired or invalid
-  if (response.status === 401) {
+  let responseData: Record<string, unknown> = {};
+  try {
+    responseData = await response.json();
+  } catch {
+    // ignore parse errors
+  }
+
+  // Handle 401 Unauthorized - token expired or invalid (skip for auth endpoints)
+  if (response.status === 401 && !isAuthEndpoint) {
     localStorage.removeItem("token");
     if (typeof window !== "undefined") {
       window.location.href = "/auth/login";
     }
-    throw new Error("Session expired. Please login again.");
+    throw new Error((responseData?.message as string) || "Session expired. Please login again.");
   }
 
   if (!response.ok) {
-    throw new Error(`API Error: ${response.statusText}`);
+    return {
+      success: false,
+      data: null as T,
+      message: (responseData?.message as string) || `Request failed (${response.status})`,
+    } as ApiResponse<T>;
   }
 
-  return response.json();
+  return responseData as unknown as ApiResponse<T>;
 }
 
 export const authApi = {

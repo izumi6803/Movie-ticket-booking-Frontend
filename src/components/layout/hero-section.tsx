@@ -41,7 +41,7 @@ export function HeroSection({
           </h1>
 
           {/* Description */}
-          <p className="text-muted-foreground text-lg max-w-xl">
+          <p className="w-full text-muted-foreground text-lg max-w-xl">
             {description}
           </p>
 

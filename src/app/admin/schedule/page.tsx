@@ -103,7 +103,7 @@ export default function AdminSchedulePage() {
                 Add Showtime
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-3xl">
               <DialogHeader>
                 <DialogTitle>
                   {editingShowtime ? "Edit Showtime" : "Add New Showtime"}
