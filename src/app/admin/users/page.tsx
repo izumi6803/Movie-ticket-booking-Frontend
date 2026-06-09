@@ -22,7 +22,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTableFilters } from "@/components/ui/data-table-filters";
 import { DataTablePagination } from "@/components/ui/data-table-pagination";
 import { LoadingState, ErrorState, EmptyState } from "@/components/ui/states";
-import { usersApi, bookingsApi } from "@/services/api";
+import { usersApi } from "@/services/api";
 import { User, Booking } from "@/types";
 import { Shield, User as UserIcon, Trash2, Eye, Ticket, Calendar, MapPin, Clock } from "lucide-react";
 import { formatVND } from "@/lib/currency";
@@ -42,7 +42,11 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     loadUsers();
-  }, [page, limit, search]);
+  }, [search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
 
   const loadUsers = async () => {
     try {
@@ -51,7 +55,6 @@ export default function AdminUsersPage() {
       const response = await usersApi.getAll();
       if (response.success) {
         setUsers(response.data);
-        setTotal(response.data.length);
       }
     } catch {
       setError("Failed to load users");
@@ -104,6 +107,15 @@ export default function AdminUsersPage() {
       user.email.toLowerCase().includes(search.toLowerCase())
   );
 
+  const paginatedUsers = filteredUsers.slice((page - 1) * limit, page * limit);
+
+  useEffect(() => {
+    setTotal(filteredUsers.length);
+    if (page > 1 && (page - 1) * limit >= filteredUsers.length) {
+      setPage(1);
+    }
+  }, [filteredUsers.length, page, limit]);
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -140,7 +152,7 @@ export default function AdminUsersPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredUsers.map((user) => (
+                  {paginatedUsers.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
