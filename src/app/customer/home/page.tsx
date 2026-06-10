@@ -93,7 +93,7 @@ export default function CustomerHomePage() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-primary/10 hover:text-primary"
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all hover:bg-primary/10 hover:text-primary"
               >
                 <item.icon className="h-4 w-4" />
                 {item.label}
