@@ -385,6 +385,16 @@ export const usersApi = {
     }),
 };
 
+export const settingsApi = {
+  getAll: () => fetchApi<Record<string, string>>("/settings"),
+
+  update: (key: string, value: string) =>
+    fetchApi<{ key: string; value: string }>("/settings", {
+      method: "PUT",
+      body: JSON.stringify({ key, value }),
+    }),
+};
+
 export const dashboardApi = {
   getAdminStats: () => fetchApi<DashboardStats>("/dashboard/admin-stats"),
 
