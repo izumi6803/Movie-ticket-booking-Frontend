@@ -9,11 +9,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { LoginDialog } from "@/components/auth/login-dialog";
+import { useAuth } from "@/hooks/useAuth";
 import { Movie, Theater, Showtime, Seat, Concession, BookingFlowState, BookingSeat, OrderItem } from "@/types";
 import { theatersApi, showtimesApi, seatsApi, concessionsApi, bookingsApi, paymentApi, seatLockApi } from "@/services/api";
 import { useAsyncState } from "@/hooks/useAsyncState";
 import { LoadingState } from "@/components/ui/states";
-import { Clock, MapPin, Armchair, ShoppingCart, QrCode, Check, Calendar } from "lucide-react";
+import { Clock, MapPin, Armchair, ShoppingCart, QrCode, Check, Calendar, LogIn } from "lucide-react";
 import { formatVND } from "@/lib/currency";
 
 interface BookingFlowProps {
@@ -24,6 +26,9 @@ interface BookingFlowProps {
 
 export function BookingFlow({ movie, isOpen, onClose }: BookingFlowProps) {
   const router = useRouter();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const [pendingShowtime, setPendingShowtime] = useState<Showtime | null>(null);
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [availableDates, setAvailableDates] = useState<string[]>([]);
@@ -166,26 +171,27 @@ export function BookingFlow({ movie, isOpen, onClose }: BookingFlowProps) {
     setSelectedDate(date);
   };
 
-  const handleSelectShowtime = async (showtime: Showtime) => {
+  const proceedToSeatSelection = async (showtime: Showtime) => {
     setFlowState((prev) => ({ ...prev, showtime, step: 3 }));
     setStep(3);
-    
+
     try {
       const response = await seatsApi.getByScreen(showtime.screenId, showtime.id);
-      console.log("Seats API response:", response);
       if (response.success) {
         seatsState.setData(response.data);
-        console.log("Seats loaded:", response.data?.length, "seats");
-        // Check first seat status
-        if (response.data && response.data.length > 0) {
-          console.log("First seat status:", response.data[0].status);
-        }
-      } else {
-        console.error("Failed to load seats:", response.message);
       }
     } catch (error) {
       console.error("Error loading seats:", error);
     }
+  };
+
+  const handleSelectShowtime = async (showtime: Showtime) => {
+    if (!authLoading && !isAuthenticated) {
+      setPendingShowtime(showtime);
+      setShowLoginDialog(true);
+      return;
+    }
+    await proceedToSeatSelection(showtime);
   };
 
   const handleToggleSeat = async (seat: Seat) => {
@@ -317,6 +323,11 @@ export function BookingFlow({ movie, isOpen, onClose }: BookingFlowProps) {
   const [createdBookingId, setCreatedBookingId] = useState<string>("");
 
   const handleCompleteBooking = async () => {
+    if (!isAuthenticated) {
+      setShowLoginDialog(true);
+      return;
+    }
+
     const { ticketTotal, concessionTotal, total } = calculateTotal();
     
     const bookingData = {
@@ -894,6 +905,17 @@ export function BookingFlow({ movie, isOpen, onClose }: BookingFlowProps) {
         </div>
 
         {renderStep()}
+
+        <LoginDialog
+          open={showLoginDialog}
+          onOpenChange={setShowLoginDialog}
+          onSuccess={() => {
+            if (pendingShowtime) {
+              proceedToSeatSelection(pendingShowtime);
+              setPendingShowtime(null);
+            }
+          }}
+        />
       </DialogContent>
     </Dialog>
   );

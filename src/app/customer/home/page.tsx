@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { moviesApi, authApi } from "@/services/api";
 import { Movie, User as UserType } from "@/types";
-import { LoadingState, ErrorState } from "@/components/ui/states";
+import { LoadingState } from "@/components/ui/states";
 import {
   Film,
   Clock,
@@ -42,24 +42,24 @@ export default function CustomerHomePage() {
     try {
       setIsLoading(true);
       
-      const [userResponse, nowResponse, soonResponse] = await Promise.all([
-        authApi.me(),
+      const [nowResponse, soonResponse] = await Promise.all([
         moviesApi.getNowShowing(),
         moviesApi.getComingSoon(),
       ]);
 
-      if (userResponse.success) setUser(userResponse.data);
       if (nowResponse.success) setNowShowing(nowResponse.data);
       if (soonResponse.success) setComingSoon(soonResponse.data);
+
+      const userResponse = await authApi.me();
+      if (userResponse.success) setUser(userResponse.data);
     } catch {
-      setError("Failed to load data");
+      // Guest users can still browse movies
     } finally {
       setIsLoading(false);
     }
   };
 
   if (isLoading) return <LoadingState message="Loading..." />;
-  if (error) return <ErrorState message={error} onRetry={loadData} />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -101,14 +101,16 @@ export default function CustomerHomePage() {
                 Hi, <span className="text-primary">{user?.name?.split(" ")[0] || "Guest"}</span>
               </span>
             </div>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={logout}
-              className="rounded-full hover:bg-destructive/10 hover:text-destructive"
-            >
-              <LogOut className="h-5 w-5" />
-            </Button>
+            {user && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={logout}
+                className="rounded-full hover:bg-destructive/10 hover:text-destructive"
+              >
+                <LogOut className="h-5 w-5" />
+              </Button>
+            )}
           </div>
         </div>
       </header>

@@ -52,9 +52,11 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="flex items-center gap-4">
-              <span className="text-sm text-muted-foreground hidden sm:block">
-                {user?.name}
-              </span>
+              {user && (
+                <span className="text-sm text-muted-foreground hidden sm:block">
+                  {user.name}
+                </span>
+              )}
 
               <Button
                 variant="ghost"
@@ -69,14 +71,16 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
                 )}
               </Button>
 
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={logout}
-                className="hidden md:flex"
-              >
-                <LogOut className="h-5 w-5" />
-              </Button>
+              {user && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={logout}
+                  className="hidden md:flex"
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              )}
             </div>
           </div>
 
@@ -103,17 +107,19 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
                   );
                 })}
 
-                <Button
-                  variant="ghost"
-                  className="justify-start gap-2 px-4"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    logout();
-                  }}
-                >
-                  <LogOut className="h-4 w-4" />
-                  Logout
-                </Button>
+                {user && (
+                  <Button
+                    variant="ghost"
+                    className="justify-start gap-2 px-4"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      logout();
+                    }}
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </Button>
+                )}
               </div>
             </div>
           )}
