@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   LineChartComponent,
   BarChartComponent,
@@ -14,7 +15,10 @@ import { DollarSign, TrendingUp, Users, Film } from "lucide-react";
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState<any>(null);
-  const [revenue, setRevenue] = useState<any[]>([]);
+  const [revenueByDay, setRevenueByDay] = useState<any[]>([]);
+  const [revenueByMovie, setRevenueByMovie] = useState<any[]>([]);
+  const [revenueByTheater, setRevenueByTheater] = useState<any[]>([]);
+  const [revenueByGenre, setRevenueByGenre] = useState<any[]>([]);
   const [topMovies, setTopMovies] = useState<any[]>([]);
   const [bookingsByGenre, setBookingsByGenre] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,17 +33,23 @@ export default function AdminDashboardPage() {
       setIsLoading(true);
       setError(null);
 
-      const [statsRes, revenueRes, moviesRes, genreRes] = await Promise.all([
+      const [statsRes, dayRes, movieRes, theaterRes, genreRes, topMoviesRes, bookingsGenreRes] = await Promise.all([
         dashboardApi.getAdminStats(),
         dashboardApi.getRevenueByDay(),
+        dashboardApi.getRevenueByMovie(),
+        dashboardApi.getRevenueByTheater(),
+        dashboardApi.getRevenueByGenre(),
         dashboardApi.getTopMovies(),
         dashboardApi.getBookingsByGenre(),
       ]);
 
       if (statsRes.success) setStats(statsRes.data || {});
-      if (revenueRes.success) setRevenue(Array.isArray(revenueRes.data) ? revenueRes.data : []);
-      if (moviesRes.success) setTopMovies(Array.isArray(moviesRes.data) ? moviesRes.data : []);
-      if (genreRes.success) setBookingsByGenre(Array.isArray(genreRes.data) ? genreRes.data : []);
+      if (dayRes.success) setRevenueByDay(Array.isArray(dayRes.data) ? dayRes.data : []);
+      if (movieRes.success) setRevenueByMovie(Array.isArray(movieRes.data) ? movieRes.data : []);
+      if (theaterRes.success) setRevenueByTheater(Array.isArray(theaterRes.data) ? theaterRes.data : []);
+      if (genreRes.success) setRevenueByGenre(Array.isArray(genreRes.data) ? genreRes.data : []);
+      if (topMoviesRes.success) setTopMovies(Array.isArray(topMoviesRes.data) ? topMoviesRes.data : []);
+      if (bookingsGenreRes.success) setBookingsByGenre(Array.isArray(bookingsGenreRes.data) ? bookingsGenreRes.data : []);
     } catch (err) {
       setError("Failed to load dashboard data");
     } finally {
@@ -77,6 +87,9 @@ export default function AdminDashboardPage() {
     },
   ];
 
+  const formatCurrency = (val: number) =>
+    val != null ? `$${Number(val).toLocaleString()}` : "$0";
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -104,29 +117,97 @@ export default function AdminDashboardPage() {
           ))}
         </div>
 
-        {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <LineChartComponent
-            data={revenue}
-            xKey="date"
-            yKey="revenue"
-            title="Revenue Trend"
-          />
+        {/* Revenue Breakdown Tabs */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Revenue Breakdown</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="daily">
+              <TabsList className="mb-4">
+                <TabsTrigger value="daily">By Day</TabsTrigger>
+                <TabsTrigger value="movie">By Movie</TabsTrigger>
+                <TabsTrigger value="theater">By Theater</TabsTrigger>
+                <TabsTrigger value="genre">By Genre</TabsTrigger>
+              </TabsList>
 
+              <TabsContent value="daily">
+                <BarChartComponent
+                  data={revenueByDay}
+                  xKey="date"
+                  yKey="revenue"
+                  title="Daily Revenue"
+                />
+              </TabsContent>
+
+              <TabsContent value="movie">
+                {revenueByMovie.length === 0 ? (
+                  <div className="flex items-center justify-center h-[300px] text-muted-foreground">
+                    No data available
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {revenueByMovie.map((item, i) => (
+                      <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+                        <span className="font-medium">{item.title}</span>
+                        <span className="text-primary font-semibold">{formatCurrency(item.revenue)}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="theater">
+                {revenueByTheater.length === 0 ? (
+                  <div className="flex items-center justify-center h-[300px] text-muted-foreground">
+                    No data available
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {revenueByTheater.map((item, i) => (
+                      <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+                        <span className="font-medium">{item.theater}</span>
+                        <span className="text-primary font-semibold">{formatCurrency(item.revenue)}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="genre">
+                {revenueByGenre.length === 0 ? (
+                  <div className="flex items-center justify-center h-[300px] text-muted-foreground">
+                    No data available
+                  </div>
+                ) : (
+                  <PieChartComponent
+                    data={revenueByGenre}
+                    nameKey="genre"
+                    valueKey="revenue"
+                    title="Revenue by Genre"
+                  />
+                )}
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+
+        {/* Top Movies & Bookings */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <BarChartComponent
             data={topMovies}
             xKey="movieTitle"
             yKey="bookings"
             title="Top Movies by Bookings"
           />
-        </div>
 
-        <PieChartComponent
-          data={bookingsByGenre}
-          nameKey="genre"
-          valueKey="bookings"
-          title="Bookings by Genre"
-        />
+          <PieChartComponent
+            data={bookingsByGenre}
+            nameKey="genre"
+            valueKey="bookings"
+            title="Bookings by Genre"
+          />
+        </div>
       </div>
     </DashboardLayout>
   );

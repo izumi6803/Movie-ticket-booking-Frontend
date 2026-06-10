@@ -409,6 +409,15 @@ export const dashboardApi = {
   getRevenueByDay: () =>
     fetchApi<{ date: string; revenue: number }[]>("/dashboard/revenue-by-day"),
 
+  getRevenueByMovie: () =>
+    fetchApi<{ title: string; revenue: number }[]>("/dashboard/revenue-by-movie"),
+
+  getRevenueByTheater: () =>
+    fetchApi<{ theater: string; revenue: number }[]>("/dashboard/revenue-by-theater"),
+
+  getRevenueByGenre: () =>
+    fetchApi<{ genre: string; revenue: number }[]>("/dashboard/revenue-by-genre"),
+
   getBookingsByGenre: () =>
     fetchApi<{ genre: string; bookings: number }[]>("/dashboard/bookings-by-genre"),
 };
