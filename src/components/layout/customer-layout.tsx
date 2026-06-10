@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { Film, Home, Ticket, User, LogOut, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { Film, Home, Ticket, User, LogOut, Menu, X, ArrowLeftFromLine } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const customerNav = [
   { name: "Home", href: "/customer/home", icon: Home },
@@ -17,11 +17,38 @@ const customerNav = [
 
 export function CustomerLayout({ children }: { children: React.ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAdminPreview, setIsAdminPreview] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const { user, logout } = useAuth();
+
+  useEffect(() => {
+    setIsAdminPreview(localStorage.getItem("admin_customer_view") === "true");
+  }, []);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {isAdminPreview && (
+        <div className="bg-yellow-600/20 border-b border-yellow-600/30 px-4 py-2">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <span className="text-yellow-400 text-sm font-medium flex items-center gap-2">
+              <span className="hidden sm:inline">⚡ Admin Preview Mode —</span> Viewing as customer
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-yellow-400 hover:text-yellow-300 gap-2 shrink-0"
+              onClick={() => {
+                localStorage.removeItem("admin_customer_view");
+                router.push("/admin/dashboard");
+              }}
+            >
+              <ArrowLeftFromLine className="h-4 w-4" />
+              <span className="hidden sm:inline">Exit Preview</span>
+            </Button>
+          </div>
+        </div>
+      )}
       <nav className="border-b bg-card sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
