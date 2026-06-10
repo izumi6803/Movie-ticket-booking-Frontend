@@ -29,23 +29,23 @@ export function LoginDialog({ open, onOpenChange, onSuccess }: LoginDialogProps)
 
   const validateForm = () => {
     if (mode === "register" && !name.trim()) {
-      setError("Vui lòng nhập họ tên");
+      setError("Full name is required");
       return false;
     }
     if (!email.trim()) {
-      setError("Vui lòng nhập email");
+      setError("Email is required");
       return false;
     }
     if (!email.includes("@")) {
-      setError("Email không hợp lệ");
+      setError("Please enter a valid email address");
       return false;
     }
     if (!password) {
-      setError("Vui lòng nhập mật khẩu");
+      setError("Password is required");
       return false;
     }
     if (mode === "register" && password.length < 6) {
-      setError("Mật khẩu phải có ít nhất 6 ký tự");
+      setError("Password must be at least 6 characters");
       return false;
     }
     return true;
@@ -71,15 +71,10 @@ export function LoginDialog({ open, onOpenChange, onSuccess }: LoginDialogProps)
         onOpenChange(false);
         onSuccess?.();
       } else {
-        const msg = result.message?.toLowerCase() || "";
-        if (msg.includes("invalid credentials") || msg.includes("incorrect")) {
-          setError("Sai email hoặc mật khẩu");
-        } else {
-          setError(result.message || "Đăng nhập thất bại");
-        }
+        setError(result.message || "Login failed");
       }
     } catch {
-      setError("Không thể kết nối đến máy chủ");
+      setError("Cannot connect to server. Please try again.");
     } finally {
       setIsLoading(false);
     }

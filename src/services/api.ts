@@ -36,7 +36,7 @@ interface PaginatedResponse<T> {
 async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-  const isAuthEndpoint = endpoint.startsWith("/auth/login") || endpoint.startsWith("/auth/register");
+  const isAuthEndpoint = endpoint.startsWith("/auth/login") || endpoint.startsWith("/auth/register") || endpoint.startsWith("/auth/me");
 
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     headers: {

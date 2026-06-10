@@ -107,13 +107,13 @@ export function SeatGrid({
       case "locked":
         return "bg-yellow-500 text-white border-yellow-500 cursor-not-allowed opacity-70";
       case "premium":
-        return "bg-blue-100 border-blue-300 text-blue-800 hover:bg-blue-200";
+        return "bg-blue-500/20 border-blue-500/40 text-blue-300 hover:bg-blue-500/30";
       case "vip":
-        return "bg-purple-100 border-purple-300 text-purple-800 hover:bg-purple-200";
+        return "bg-purple-500/20 border-purple-500/40 text-purple-300 hover:bg-purple-500/30";
       case "wheelchair":
-        return "bg-green-100 border-green-300 text-green-800 hover:bg-green-200";
+        return "bg-green-500/20 border-green-500/40 text-green-300 hover:bg-green-500/30";
       default:
-        return "bg-gray-100 border-gray-300 text-gray-800 hover:bg-gray-200";
+        return "bg-muted/50 border-border text-muted-foreground hover:bg-muted";
     }
   };
 
@@ -159,8 +159,8 @@ export function SeatGrid({
 
       {/* Screen */}
       <div className="flex justify-center">
-        <div className="w-3/4 h-8 bg-gradient-to-b from-gray-300 to-gray-100 rounded-t-lg flex items-center justify-center shadow-inner">
-          <span className="text-xs font-medium text-gray-600">SCREEN</span>
+        <div className="w-3/4 h-8 bg-gradient-to-b from-muted to-muted/50 rounded-t-lg flex items-center justify-center shadow-inner">
+          <span className="text-xs font-medium text-muted-foreground">SCREEN</span>
         </div>
       </div>
 
@@ -168,7 +168,7 @@ export function SeatGrid({
       <div className="space-y-2">
         {sortedRows.map((row) => (
           <div key={row} className="flex items-center gap-2">
-            <span className="w-8 text-center font-bold text-gray-500 text-sm">{row}</span>
+            <span className="w-8 text-center font-bold text-muted-foreground text-sm">{row}</span>
             <div className="flex gap-1.5 flex-1 justify-center">
               {seatsByRow[row]
                 ?.sort((a, b) => a.seatNumber - b.seatNumber)
@@ -195,7 +195,7 @@ export function SeatGrid({
                   );
                 })}
             </div>
-            <span className="w-8 text-center font-bold text-gray-500 text-sm">{row}</span>
+            <span className="w-8 text-center font-bold text-muted-foreground text-sm">{row}</span>
           </div>
         ))}
       </div>
@@ -203,7 +203,7 @@ export function SeatGrid({
       {/* Legend */}
       <div className="flex flex-wrap gap-4 justify-center text-xs pt-4">
         <div className="flex items-center gap-1">
-          <div className="w-4 h-4 rounded bg-gray-100 border-2 border-gray-300"></div>
+          <div className="w-4 h-4 rounded bg-muted/50 border-2 border-border"></div>
           <span>Available</span>
         </div>
         <div className="flex items-center gap-1">
@@ -219,7 +219,7 @@ export function SeatGrid({
           <span>Booked</span>
         </div>
         <div className="flex items-center gap-1">
-          <div className="w-4 h-4 rounded bg-purple-100 border-2 border-purple-300"></div>
+          <div className="w-4 h-4 rounded bg-purple-500/20 border-2 border-purple-500/40"></div>
           <span>VIP</span>
         </div>
       </div>

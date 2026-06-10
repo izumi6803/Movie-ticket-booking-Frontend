@@ -79,19 +79,19 @@ export default function TicketDetailPage() {
       case "expired":
         return {
           icon: AlertCircle,
-          color: "bg-gray-500/10 text-gray-600 border-gray-200",
+          color: "bg-muted text-muted-foreground border-border",
           label: "Expired"
         };
       case "completed":
         return {
           icon: CheckCircle2,
-          color: "bg-blue-500/10 text-blue-600 border-blue-200",
+          color: "bg-blue-500/10 text-blue-400 border-blue-500/20",
           label: "Completed"
         };
       default:
         return {
           icon: AlertCircle,
-          color: "bg-gray-500/10 text-gray-600 border-gray-200",
+          color: "bg-muted text-muted-foreground border-border",
           label: status
         };
     }
@@ -254,7 +254,7 @@ export default function TicketDetailPage() {
                   Ticket QR Code
                 </h2>
                 
-                <div className="bg-white p-6 rounded-xl border-2 border-dashed border-border/50 shadow-inner mb-4">
+                <div className="bg-card p-6 rounded-xl border-2 border-dashed border-border/50 shadow-inner mb-4">
                   <svg 
                     viewBox="0 0 200 200" 
                     className="w-full h-auto max-w-[200px] mx-auto"

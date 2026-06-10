@@ -125,19 +125,19 @@ export default function CustomerTicketsPage() {
       case "expired":
         return {
           icon: AlertCircle,
-          color: "bg-gray-500/10 text-gray-600 border-gray-200",
+          color: "bg-muted text-muted-foreground border-border",
           label: "Expired"
         };
       case "completed":
         return {
           icon: CheckCircle2,
-          color: "bg-blue-500/10 text-blue-600 border-blue-200",
+          color: "bg-blue-500/10 text-blue-400 border-blue-500/20",
           label: "Completed"
         };
       default:
         return {
           icon: AlertCircle,
-          color: "bg-gray-500/10 text-gray-600 border-gray-200",
+          color: "bg-muted text-muted-foreground border-border",
           label: status
         };
     }
@@ -307,10 +307,10 @@ export default function CustomerTicketsPage() {
                                 variant="outline" 
                                 size="sm"
                                 onClick={() => handleShowQR(booking)}
-                                className="rounded-full gap-2 bg-green-50 border-green-200 hover:bg-green-100"
+                                className="rounded-full gap-2 bg-green-500/10 border-green-500/20 hover:bg-green-500/20"
                               >
-                                <QrCode className="h-4 w-4 text-green-600" />
-                                <span className="text-green-700">Show QR</span>
+                                <QrCode className="h-4 w-4 text-green-400" />
+                                <span className="text-green-400">Show QR</span>
                               </Button>
                             ) : booking.status === "pending" ? (
                               <Button 
@@ -346,7 +346,7 @@ export default function CustomerTicketsPage() {
           
           {selectedQR && (
             <div className="space-y-4">
-              <div className="bg-white p-6 rounded-xl border-2 border-dashed border-border/50 shadow-inner">
+              <div className="bg-card p-6 rounded-xl border-2 border-dashed border-border/50 shadow-inner">
                 <svg 
                   viewBox="0 0 200 200" 
                   className="w-full h-auto"

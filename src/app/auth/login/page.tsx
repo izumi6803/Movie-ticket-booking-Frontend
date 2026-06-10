@@ -88,18 +88,13 @@ export default function AuthPage() {
       }
 
       if (!result.success) {
-          const msg = result.message?.toLowerCase() || "";
-          if (msg.includes("invalid credentials") || msg.includes("incorrect")) {
-            setError("Sai email hoặc mật khẩu");
-          } else {
-            setError(result.message || (mode === "login" ? "Đăng nhập thất bại" : "Đăng ký thất bại"));
-          }
+          setError(result.message || (mode === "login" ? "Login failed" : "Registration failed"));
       }
     } catch {
       if (mode === "login") {
-        setError("Không thể kết nối đến máy chủ. Vui lòng thử lại.");
+        setError("Cannot connect to server. Please try again.");
       } else {
-        setError("Đã xảy ra lỗi. Vui lòng thử lại.");
+        setError("An error occurred. Please try again.");
       }
     } finally {
       setIsLoading(false);
@@ -124,11 +119,11 @@ export default function AuthPage() {
               </Link>
             </div>
 
-            <div className="bg-white rounded-lg shadow-2xl overflow-hidden">
+            <div className="bg-card rounded-lg shadow-2xl overflow-hidden">
               {/* Header Tabs */}
               <div className="bg-[#ff1744] px-6 py-4 flex items-center gap-8">
                 <h2 className="text-xl font-bold text-white">
-                  {mode === "login" ? "Đăng nhập" : "Đăng ký"}
+                  {mode === "login" ? "Sign In" : "Sign Up"}
                 </h2>
                 {mode === "login" && (
                   <button
@@ -136,7 +131,7 @@ export default function AuthPage() {
                     onClick={toggleMode}
                     className="text-white/70 hover:text-white transition-colors text-sm font-medium"
                   >
-                    Đăng ký
+                    Sign Up
                   </button>
                 )}
                 {mode === "register" && (
@@ -145,7 +140,7 @@ export default function AuthPage() {
                     onClick={toggleMode}
                     className="text-white/70 hover:text-white transition-colors text-sm font-medium"
                   >
-                    Đăng nhập
+                    Sign In
                   </button>
                 )}
               </div>
@@ -153,25 +148,25 @@ export default function AuthPage() {
               {/* Form Content */}
               <form onSubmit={handleSubmit} className="p-6 space-y-5">
                 {error && (
-                  <div className="p-4 rounded-lg bg-red-50 text-red-600 text-sm border border-red-200">
+                  <div className="p-4 rounded-lg bg-red-500/10 text-red-400 text-sm border border-red-500/20">
                     {error}
                   </div>
                 )}
 
                 {mode === "register" && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Họ và tên <span className="text-red-600">*</span>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Full Name <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                       <input
                         id="name"
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-[#ff1744] focus:border-transparent outline-none transition-all"
-                        placeholder="Nhập họ và tên"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:ring-2 focus:ring-[#ff1744] focus:border-transparent outline-none transition-all"
+                        placeholder="Enter your full name"
                         required
                       />
                     </div>
@@ -179,18 +174,18 @@ export default function AuthPage() {
                 )}
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email hoặc số điện thoại <span className="text-red-600">*</span>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Email or Phone Number <span className="text-red-400">*</span>
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                     <input
                       id="email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-[#ff1744] focus:border-transparent outline-none transition-all"
-                      placeholder="Email hoặc số điện thoại"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:ring-2 focus:ring-[#ff1744] focus:border-transparent outline-none transition-all"
+                      placeholder="Email or Phone Number"
                       required
                     />
                   </div>
@@ -198,36 +193,36 @@ export default function AuthPage() {
 
                 {mode === "register" && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Số điện thoại (Tùy chọn)
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Phone Number (Optional)
                     </label>
                     <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                       <input
                         id="phone"
                         type="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-[#ff1744] focus:border-transparent outline-none transition-all"
-                        placeholder="Số điện thoại"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:ring-2 focus:ring-[#ff1744] focus:border-transparent outline-none transition-all"
+                        placeholder="Phone Number"
                       />
                     </div>
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Mật khẩu <span className="text-red-600">*</span>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Password <span className="text-red-400">*</span>
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                     <input
                       id="password"
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-[#ff1744] focus:border-transparent outline-none transition-all"
-                      placeholder="Mật khẩu"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:ring-2 focus:ring-[#ff1744] focus:border-transparent outline-none transition-all"
+                      placeholder="Password"
                       required
                     />
                   </div>
@@ -241,12 +236,12 @@ export default function AuthPage() {
                   {isLoading ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                      {mode === "login" ? "Đang đăng nhập..." : "Đang tạo tài khoản..."}
+                      {mode === "login" ? "Signing in..." : "Creating account..."}
                     </>
                   ) : mode === "login" ? (
-                    "Đăng nhập"
+                    "Sign In"
                   ) : (
-                    "Đăng ký"
+                    "Sign Up"
                   )}
                 </Button>
 
@@ -256,7 +251,7 @@ export default function AuthPage() {
                       href="/auth/forgot-password"
                       className="text-sm text-[#ff1744] hover:underline font-medium"
                     >
-                      Bạn muốn tìm lại mật khẩu?
+                      Forgot your password?
                     </Link> */}
                   </div>
                 )}

@@ -13,11 +13,11 @@ export default function CustomerBookingsPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
-          <p className="text-gray-600 mt-1">View your booking history.</p>
+          <h1 className="text-3xl font-bold text-foreground">My Bookings</h1>
+          <p className="text-muted-foreground mt-1">View your booking history.</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div className="bg-card rounded-xl shadow-sm border border-border">
           <Table>
             <TableHeader>
               <TableRow>
@@ -31,7 +31,7 @@ export default function CustomerBookingsPage() {
             </TableHeader>
             <TableBody>
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-gray-500">
+                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
                   No bookings found.
                 </TableCell>
               </TableRow>

@@ -76,13 +76,9 @@ export function useAuth() {
       }
       return { success: false, message: response.message };
     } catch (error) {
-      const msg = error instanceof Error ? error.message : "";
-      if (msg.toLowerCase().includes("invalid credentials") || msg.toLowerCase().includes("incorrect")) {
-        return { success: false, message: "Sai email hoặc mật khẩu" };
-      }
       return {
         success: false,
-        message: msg || "Login failed",
+        message: error instanceof Error ? error.message : "Login failed",
       };
     }
   };
