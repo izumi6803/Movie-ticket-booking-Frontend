@@ -4,6 +4,9 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload, X, ImageIcon } from "lucide-react";
 
+const CLOUDINARY_CLOUD = "dsa4sisfl";
+const CLOUDINARY_UPLOAD_PRESET = "cinema_unsigned";
+
 interface ImageUploadProps {
   value?: string;
   onChange: (url: string) => void;
@@ -24,19 +27,16 @@ export function ImageUpload({ value, onChange, onRemove, className }: ImageUploa
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.type.startsWith("image/")) {
       alert("Please select an image file");
       return;
     }
 
-    // Validate file size (10MB)
     if (file.size > 10 * 1024 * 1024) {
       alert("File size must be less than 10MB");
       return;
     }
 
-    // Show preview immediately
     const localPreview = URL.createObjectURL(file);
     setPreview(localPreview);
     setIsUploading(true);
@@ -44,33 +44,29 @@ export function ImageUpload({ value, onChange, onRemove, className }: ImageUploa
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+      formData.append("folder", "cinema");
 
-      const token = localStorage.getItem("token");
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
-      const response = await fetch(`${API_BASE_URL}/uploads`, {
-        method: "POST",
-        headers: {
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
+        { method: "POST", body: formData }
+      );
 
       const data = await response.json();
 
-      if (data.success) {
-        onChange(data.data.url);
-        setPreview(data.data.url);
+      if (data.secure_url) {
+        onChange(data.secure_url);
+        setPreview(data.secure_url);
       } else {
-        alert(data.message || "Upload failed");
-        setPreview(value); // Revert to original
+        alert(data.error?.message || "Upload failed");
+        setPreview(value);
       }
     } catch (error) {
       console.error("Upload error:", error);
       alert("Failed to upload image");
-      setPreview(value); // Revert to original
+      setPreview(value);
     } finally {
       setIsUploading(false);
-      // Clean up local preview if upload failed
       if (localPreview && !localPreview.startsWith("http")) {
         URL.revokeObjectURL(localPreview);
       }
