@@ -22,7 +22,9 @@ import {
   TrendingUp,
   Heart,
   User,
+  LogIn,
 } from "lucide-react";
+import { LoginDialog } from "@/components/auth/login-dialog";
 
 export default function CustomerHomePage() {
   const router = useRouter();
@@ -33,6 +35,7 @@ export default function CustomerHomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hoveredMovie, setHoveredMovie] = useState<string | null>(null);
+  const [loginOpen, setLoginOpen] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -80,8 +83,12 @@ export default function CustomerHomePage() {
             {[
               { href: "/customer/home", label: "Home", icon: Sparkles },
               { href: "/customer/movies", label: "Movies", icon: Film },
-              { href: "/customer/tickets", label: "My Tickets", icon: Ticket },
-              { href: "/customer/profile", label: "Profile", icon: User },
+              ...(user
+                ? [
+                    { href: "/customer/tickets", label: "My Tickets", icon: Ticket },
+                    { href: "/customer/profile", label: "Profile", icon: User },
+                  ]
+                : []),
             ].map((item) => (
               <Link
                 key={item.href}
@@ -95,20 +102,30 @@ export default function CustomerHomePage() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium">
-                Hi, <span className="text-primary">{user?.name?.split(" ")[0] || "Guest"}</span>
-              </span>
-            </div>
-            {user && (
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={logout}
-                className="rounded-full hover:bg-destructive/10 hover:text-destructive"
+            {user ? (
+              <>
+                <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium">
+                    Hi, <span className="text-primary">{user?.name?.split(" ")[0]}</span>
+                  </span>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={logout}
+                  className="rounded-full hover:bg-destructive/10 hover:text-destructive"
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={() => setLoginOpen(true)}
+                className="rounded-full gap-2"
               >
-                <LogOut className="h-5 w-5" />
+                <LogIn className="h-4 w-4" />
+                Sign In
               </Button>
             )}
           </div>
@@ -361,6 +378,8 @@ export default function CustomerHomePage() {
           </div>
         </div>
       </footer>
+
+      <LoginDialog open={loginOpen} onOpenChange={setLoginOpen} onSuccess={() => loadData()} />
     </div>
   );
 }

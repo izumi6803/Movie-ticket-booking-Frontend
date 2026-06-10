@@ -92,7 +92,7 @@ export function LoginDialog({ open, onOpenChange, onSuccess }: LoginDialogProps)
           <div className="flex items-center gap-2 mb-2">
             <Clapperboard className="h-6 w-6 text-primary" />
             <DialogTitle>
-              {mode === "login" ? "Đăng nhập" : "Đăng ký"}
+              {mode === "login" ? "Sign In" : "Sign Up"}
             </DialogTitle>
           </div>
         </DialogHeader>
@@ -107,7 +107,7 @@ export function LoginDialog({ open, onOpenChange, onSuccess }: LoginDialogProps)
           {mode === "register" && (
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">
-                Họ và tên <span className="text-destructive">*</span>
+                Full Name <span className="text-destructive">*</span>
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -116,7 +116,7 @@ export function LoginDialog({ open, onOpenChange, onSuccess }: LoginDialogProps)
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full pl-9 pr-3 py-2 rounded-lg border border-border bg-card text-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm"
-                  placeholder="Nguyễn Văn A"
+                  placeholder="John Doe"
                   required
                 />
               </div>
@@ -143,7 +143,7 @@ export function LoginDialog({ open, onOpenChange, onSuccess }: LoginDialogProps)
           {mode === "register" && (
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">
-                Số điện thoại
+                Phone Number
               </label>
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -160,7 +160,7 @@ export function LoginDialog({ open, onOpenChange, onSuccess }: LoginDialogProps)
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-1.5">
-              Mật khẩu <span className="text-destructive">*</span>
+                Password <span className="text-destructive">*</span>
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -183,12 +183,12 @@ export function LoginDialog({ open, onOpenChange, onSuccess }: LoginDialogProps)
             {isLoading ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                {mode === "login" ? "Đang đăng nhập..." : "Đang tạo tài khoản..."}
+                {mode === "login" ? "Signing in..." : "Creating account..."}
               </>
             ) : mode === "login" ? (
-              "Đăng nhập"
+              "Sign In"
             ) : (
-              "Đăng ký"
+              "Sign Up"
             )}
           </Button>
 
@@ -199,8 +199,8 @@ export function LoginDialog({ open, onOpenChange, onSuccess }: LoginDialogProps)
               className="text-sm text-primary hover:underline"
             >
               {mode === "login"
-                ? "Chưa có tài khoản? Đăng ký ngay"
-                : "Đã có tài khoản? Đăng nhập"}
+                ? "Don't have an account? Sign Up"
+                : "Already have an account? Sign In"}
             </button>
           </div>
         </form>
