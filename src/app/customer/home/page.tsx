@@ -68,7 +68,7 @@ export default function CustomerHomePage() {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       {/* Modern Header with Glass Effect */}
       <header className="sticky top-0 z-50 backdrop-blur-xl bg-background/80 border-b border-border/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 grid grid-cols-3 items-center">
           <Link href="/customer/home" className="flex items-center gap-2 group">
             <div className="relative">
               <Film className="h-8 w-8 text-primary transition-transform group-hover:scale-110" />
@@ -79,7 +79,7 @@ export default function CustomerHomePage() {
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center justify-center gap-1">
             {[
               { href: "/customer/home", label: "Home", icon: Sparkles },
               { href: "/customer/movies", label: "Movies", icon: Film },
@@ -101,7 +101,7 @@ export default function CustomerHomePage() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-end gap-3">
             {user ? (
               <>
                 <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20">
@@ -166,15 +166,17 @@ export default function CustomerHomePage() {
                 <Ticket className="h-5 w-5 mr-2" />
                 Browse Movies
               </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => router.push("/customer/tickets")}
-                className="rounded-full px-8"
-              >
-                <Play className="h-5 w-5 mr-2" />
-                My Tickets
-              </Button>
+              {user && (
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => router.push("/customer/tickets")}
+                  className="rounded-full px-8"
+                >
+                  <Play className="h-5 w-5 mr-2" />
+                  My Tickets
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -372,8 +374,12 @@ export default function CustomerHomePage() {
             
             <div className="flex items-center gap-4">
               <Link href="/customer/movies" className="text-sm text-muted-foreground hover:text-primary transition-colors">Movies</Link>
-              <Link href="/customer/tickets" className="text-sm text-muted-foreground hover:text-primary transition-colors">Tickets</Link>
-              <Link href="/customer/profile" className="text-sm text-muted-foreground hover:text-primary transition-colors">Profile</Link>
+              {user && (
+                <>
+                  <Link href="/customer/tickets" className="text-sm text-muted-foreground hover:text-primary transition-colors">Tickets</Link>
+                  <Link href="/customer/profile" className="text-sm text-muted-foreground hover:text-primary transition-colors">Profile</Link>
+                </>
+              )}
             </div>
           </div>
         </div>
