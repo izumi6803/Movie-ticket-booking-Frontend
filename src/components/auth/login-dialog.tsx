@@ -71,7 +71,12 @@ export function LoginDialog({ open, onOpenChange, onSuccess }: LoginDialogProps)
         onOpenChange(false);
         onSuccess?.();
       } else {
-        setError(result.message || "Đăng nhập thất bại");
+        const msg = result.message?.toLowerCase() || "";
+        if (msg.includes("invalid credentials") || msg.includes("incorrect")) {
+          setError("Sai email hoặc mật khẩu");
+        } else {
+          setError(result.message || "Đăng nhập thất bại");
+        }
       }
     } catch {
       setError("Không thể kết nối đến máy chủ");

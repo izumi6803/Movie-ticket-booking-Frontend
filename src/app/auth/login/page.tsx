@@ -88,7 +88,12 @@ export default function AuthPage() {
       }
 
       if (!result.success) {
-          setError(result.message || (mode === "login" ? "Đăng nhập thất bại" : "Đăng ký thất bại"));
+          const msg = result.message?.toLowerCase() || "";
+          if (msg.includes("invalid credentials") || msg.includes("incorrect")) {
+            setError("Sai email hoặc mật khẩu");
+          } else {
+            setError(result.message || (mode === "login" ? "Đăng nhập thất bại" : "Đăng ký thất bại"));
+          }
       }
     } catch {
       if (mode === "login") {
